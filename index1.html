@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MHT-CET Marks Calculator</title>
+
+  <!-- SEO -->
+  <meta name="description" content="MHT-CET Marks Calculator with percentile estimation. Easy, fast and free.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      --primary: #2563eb;
+      --bg: #f4f6fb;
+      --card: #ffffff;
+      --text: #1f2937;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 420px;
+      width: 100%;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      font-size: 22px;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-size: 14px;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 15px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      outline: none;
+    }
+
+    select {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  outline: none;
+}
+
+select:focus {
+  border-color: var(--primary);
+}
+
+
+    input:focus {
+      border-color: var(--primary);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .result {
+      margin-top: 20px;
+      background: #f1f5ff;
+      padding: 15px;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .result p {
+      margin: 8px 0;
+      font-size: 15px;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #6b7280;
+      text-align: center;
+    }
+
+    /* FUTURE SECTIONS */
+    .section {
+      margin-top: 40px;
+    }
+
+/* ===== DESIGN UPGRADE ===== */
+
+.card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+}
+
+button {
+  transition: background 0.3s ease, transform 0.15s ease;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+h1 {
+  letter-spacing: 0.3px;
+}
+
+.result {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* MOBILE OPTIMIZATION */
+@media (max-width: 480px) {
+  body {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+}
+
+.highlight {
+  color: #1e40af;
+  font-weight: bold;
+}
+
+footer a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- HEADER -->
+<div class="card" style="margin-bottom:25px; background:linear-gradient(135deg,#2563eb,#1e40af); color:white;">
+  <h1 style="margin:0;">MHT-CET Counselling Tool</h1>
+  <p style="margin-top:8px; font-size:14px; opacity:0.9;">
+    Marks Calculator • College Suggestion • Cutoff Viewer
+  </p>
+</div>
+
+
+  <!-- MARKS CALCULATOR -->
+  <div class="card" id="marks-calculator">
+    <h1>MHT-CET Marks Calculator</h1>
+    <div class="subtitle">Estimate your score & percentile</div>
+
+    <div class="input-group">
+      <label>Correct Answers</label>
+      <input type="number" id="correct" placeholder="e.g. 120">
+    </div>
+
+    <div class="input-group">
+      <label>Wrong Answers</label>
+      <input type="number" id="wrong" placeholder="e.g. 10">
+    </div>
+
+    <button onclick="calculateMarks()">Calculate</button>
+
+    <div class="result" id="resultBox">
+      <p><strong>Marks:</strong> <span id="marksOut"></span></p>
+      <p><strong>Approx Percentile:</strong> <span id="percentileOut"></span></p>
+      <p><strong>Approx Rank:</strong> <span id="rankOut" class="highlight"></span>
+</p>
+
+    </div>
+
+    <div class="note">
+      * Approximate calculation based on previous year trends.
+    </div>
+  </div>
+
+  <!-- 🔮 FUTURE FEATURES PLACEHOLDERS -->
+
+  <!-- AUTO COLLEGE SUGGESTION -->
+<div class="card section" id="college-suggestion">
+  <h1>College Suggestions</h1>
+  <div class="subtitle">Based on your rank & preferred branch</div>
+
+  <div class="input-group">
+    <label>Select Branch</label>
+    <select id="branchPreference">
+      <option>Computer Engineering</option>
+      <option>IT Engineering</option>
+      <option>Mechanical Engineering</option>
+      <option>Electronics Engineering</option>
+    </select>
+  </div>
+
+  <button onclick="suggestColleges()">Suggest Colleges</button>
+
+  <div class="result" id="suggestResultBox">
+    <p id="suggestOut"></p>
+  </div>
+
+  <div class="note">
+    * Suggestions are indicative and based on previous year trends.
+  </div>
+</div>
+
+
+  <!-- CUTOFF VIEWER -->
+<div class="card section" id="cutoff-viewer">
+  <h1>Previous Year Cutoff</h1>
+  <div class="subtitle">Check branch-wise cutoff percentile</div>
+
+  <div class="input-group">
+    <label>Select Branch</label>
+    <select id="branchSelect">
+      <option>Computer Engineering</option>
+      <option>IT Engineering</option>
+      <option>Mechanical Engineering</option>
+    </select>
+  </div>
+
+  <div class="input-group">
+    <label>Select Category</label>
+    <select id="categorySelect">
+      <option>OPEN</option>
+      <option>OBC</option>
+      <option>SC</option>
+    </select>
+  </div>
+
+  <button onclick="showCutoff()">View Cutoff</button>
+
+  <div class="result" id="cutoffResultBox">
+    <p><strong>Cutoff Percentile:</strong> <span id="cutoffOut"></span></p>
+  </div>
+
+  <div class="note">
+    * Based on previous year CAP round data.
+  </div>
+</div>
+
+
+  <!-- College Comparison -->
+ 
+<!-- COLLEGE COMPARISON -->
+<div class="card section" id="college-comparison">
+  <h1>College Comparison</h1>
+  <div class="subtitle">Compare top MHT-CET colleges</div>
+
+  <div class="input-group">
+    <label>Select College 1</label>
+   <select id="college1">
+  <option>VJTI</option>
+  <option>COEP</option>
+  <option>SPIT</option>
+  <option>PICT</option>
+  <option>DJ Sanghvi</option>
+  <option>VIT Pune</option>
+  <option>Walchand</option>
+  <option>SIES GST</option>
+</select>
+
+  </div>
+
+  <div class="input-group">
+    <label>Select College 2</label>
+    <select id="college2">
+  <option>COEP</option>
+  <option>VJTI</option>
+  <option>SPIT</option>
+  <option>PICT</option>
+  <option>DJ Sanghvi</option>
+  <option>VIT Pune</option>
+  <option>Walchand</option>
+  <option>SIES GST</option>
+</select>
+
+  </div>
+
+  <button onclick="compareColleges()">Compare</button>
+
+  <div class="result" id="collegeResultBox">
+    <p><strong>College 1:</strong> <span id="collegeOut1"></span></p>
+    <p><strong>College 2:</strong> <span id="collegeOut2"></span></p>
+  </div>
+
+  <div class="note">
+    * Data is indicative and based on public information.
+  </div>
+</div>
+
+
+
+
+</div>
+
+ <script>
+/* =========================
+   MARKS CALCULATOR
+   ========================= */
+
+function calculateMarks() {
+  const correct = Number(document.getElementById("correct").value);
+  const wrong = Number(document.getElementById("wrong").value);
+
+  if (correct < 0 || wrong < 0) {
+    alert("Please enter valid numbers");
+    return;
+  }
+
+  const marks = correct * 1;
+
+  let percentile;
+  if (marks >= 150) percentile = 99.7;
+  else if (marks >= 140) percentile = 99.5;
+  else if (marks >= 130) percentile = 98.5;
+  else if (marks >= 120) percentile = 96.5;
+  else if (marks >= 110) percentile = 92.0;
+  else if (marks >= 90) percentile = 85.0;
+  else if (marks >= 70) percentile = 70.0;
+  else if (marks >= 50) percentile = 50.0;
+  else percentile = 30.0;
+
+  const TOTAL_CANDIDATES = 300000;
+  const rank = Math.round(((100 - percentile) / 100) * TOTAL_CANDIDATES);
+
+  document.getElementById("marksOut").innerText = marks;
+  document.getElementById("percentileOut").innerText = percentile.toFixed(2);
+  document.getElementById("rankOut").innerText = rank;
+
+  document.getElementById("resultBox").style.display = "block";
+}
+
+/* =========================
+   CUTOFF DATA
+   ========================= */
+
+const cutoffData = {
+  "Computer Engineering": {
+    "OPEN": 99.20,
+    "OBC": 97.50,
+    "SC": 92.10
+  },
+  "IT Engineering": {
+    "OPEN": 98.60,
+    "OBC": 96.20,
+    "SC": 90.00
+  },
+  "Mechanical Engineering": {
+    "OPEN": 96.40,
+    "OBC": 93.80,
+    "SC": 88.50
+  }
+};
+
+/* =========================
+   CUTOFF VIEWER
+   ========================= */
+
+function showCutoff() {
+  const branch = document.getElementById("branchSelect").value;
+  const category = document.getElementById("categorySelect").value;
+
+  const cutoff = cutoffData[branch][category];
+
+  document.getElementById("cutoffOut").innerText = cutoff;
+  document.getElementById("cutoffResultBox").style.display = "block";
+}
+
+   /* =========================
+   COLLEGE DATA
+   ========================= */
+
+const collegeData = {
+  "VJTI": {
+    fees: "₹85,000 / year",
+    placement: "₹10 LPA",
+    location: "Mumbai"
+  },
+  "COEP": {
+    fees: "₹90,000 / year",
+    placement: "₹8 LPA",
+    location: "Pune"
+  },
+  "SPIT": {
+    fees: "₹1,25,000 / year",
+    placement: "₹7 LPA",
+    location: "Mumbai"
+  },
+  "PICT": {
+    fees: "₹1,10,000 / year",
+    placement: "₹6.5 LPA",
+    location: "Pune"
+  },
+  "DJ Sanghvi": {
+    fees: "₹1,45,000 / year",
+    placement: "₹6 LPA",
+    location: "Mumbai"
+  },
+  "VIT Pune": {
+    fees: "₹1,75,000 / year",
+    placement: "₹6.8 LPA",
+    location: "Pune"
+  },
+  "Walchand": {
+    fees: "₹80,000 / year",
+    placement: "₹5.5 LPA",
+    location: "Sangli"
+  },
+  "SIES GST": {
+    fees: "₹1,30,000 / year",
+    placement: "₹5 LPA",
+    location: "Navi Mumbai"
+  }
+};
+
+
+/* =========================
+   COLLEGE COMPARISON LOGIC
+   ========================= */
+
+function compareColleges() {
+  const c1 = document.getElementById("college1").value;
+  const c2 = document.getElementById("college2").value;
+
+  const col1 = collegeData[c1];
+  const col2 = collegeData[c2];
+
+  document.getElementById("collegeOut1").innerHTML =
+    `${c1}<br>Fees: ${col1.fees}<br>Placement: ${col1.placement}<br>Location: ${col1.location}`;
+
+  document.getElementById("collegeOut2").innerHTML =
+    `${c2}<br>Fees: ${col2.fees}<br>Placement: ${col2.placement}<br>Location: ${col2.location}`;
+
+  document.getElementById("collegeResultBox").style.display = "block";
+}
+
+/* =========================
+   BRANCH-WISE COLLEGE SUGGESTION
+   ========================= */
+
+function suggestColleges() {
+  const rankText = document.getElementById("rankOut").innerText;
+  const branch = document.getElementById("branchPreference").value;
+
+  if (!rankText) {
+    alert("Please calculate your marks first.");
+    return;
+  }
+
+  const rank = Number(rankText);
+  let suggestions = [];
+
+  if (branch === "Computer Engineering") {
+    if (rank <= 1000) suggestions = ["VJTI", "COEP"];
+    else if (rank <= 3000) suggestions = ["SPIT", "PICT"];
+    else if (rank <= 6000) suggestions = ["VIT Pune", "DJ Sanghvi"];
+    else suggestions = ["Walchand", "SIES GST"];
+  }
+
+  else if (branch === "IT Engineering") {
+    if (rank <= 2000) suggestions = ["VJTI", "COEP"];
+    else if (rank <= 4000) suggestions = ["SPIT", "PICT"];
+    else suggestions = ["VIT Pune", "DJ Sanghvi"];
+  }
+
+  else if (branch === "Mechanical Engineering") {
+    if (rank <= 5000) suggestions = ["COEP", "VJTI"];
+    else if (rank <= 12000) suggestions = ["Walchand", "VIT Pune"];
+    else suggestions = ["SIES GST", "Other CET Colleges"];
+  }
+
+  else if (branch === "Electronics Engineering") {
+    if (rank <= 3000) suggestions = ["VJTI", "SPIT"];
+    else if (rank <= 7000) suggestions = ["COEP", "PICT"];
+    else suggestions = ["VIT Pune", "DJ Sanghvi"];
+  }
+
+  document.getElementById("suggestOut").innerHTML =
+    `<strong>Suggested Colleges for ${branch}:</strong><br>` +
+    suggestions.map(c => "• " + c).join("<br>");
+
+
+  document.getElementById("suggestResultBox").style.display = "block";
+}
+
+
+</script>
+
+
+<!-- FOOTER -->
+<footer style="
+  margin-top: 60px;
+  padding: 20px 10px;
+  text-align: center;
+  font-size: 13px;
+  color: #6b7280;
+">
+  <div style="margin-bottom: 8px;">
+    <a href="about.html">About Us</a> |
+    <a href="privacy.html">Privacy Policy</a> |
+    <a href="disclaimer.html">Disclaimer</a> |
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <div>
+    © 2026 MHT-CET Counselling Tool. All rights reserved.
+  </div>
+</footer>
+
+
+
+</body>
+</html>
